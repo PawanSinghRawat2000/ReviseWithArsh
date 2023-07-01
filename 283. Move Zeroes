@@ -1,0 +1,12 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int j=0;
+        //arrange all non zero terms
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]!=0)nums[j++]=nums[i];
+        }
+        //add all zeroes after j
+        for(;j<nums.size();j++)nums[j]=0;
+    }
+};
