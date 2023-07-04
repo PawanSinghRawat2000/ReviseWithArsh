@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool flag=false;
+    void solve(int i,int j,vector<vector<char>>&board,vector<vector<int>>&vis,string w,int idx){
+        if(idx==w.length()){
+            flag=true;
+            return;
+        }
+
+        if(i+1<board.size() && board[i+1][j]==w[idx] && vis[i+1][j]==0){
+            vis[i+1][j]=1;
+            solve(i+1,j,board,vis,w,idx+1);
+            vis[i+1][j]=0;
+        }
+        if(i-1>=0 && board[i-1][j]==w[idx] && vis[i-1][j]==0){
+            vis[i-1][j]=1;
+            solve(i-1,j,board,vis,w,idx+1);
+            vis[i-1][j]=0;
+        }
+        if(j+1<board[0].size() && board[i][j+1]==w[idx] && vis[i][j+1]==0){
+            vis[i][j+1]=1;
+            solve(i,j+1,board,vis,w,idx+1);
+            vis[i][j+1]=0;
+        }
+        if(j-1>=0 && board[i][j-1]==w[idx] && vis[i][j-1]==0){
+            vis[i][j-1]=1;
+            solve(i,j-1,board,vis,w,idx+1);
+            vis[i][j-1]=0;
+        }
+        return;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int n=board.size(),m=board[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j]==word[0]){
+                    vis[i][j]=1;
+                    solve(i,j,board,vis,word,1);
+                    vis[i][j]=0;
+                }
+            }
+        }
+        if(flag)return true;
+        return false;
+    }
+};
