@@ -1,0 +1,48 @@
+class Solution {
+public:
+
+    string spaceJustifier(string s,int maxWidth,int isLast){
+        if(s.length()==maxWidth)return s;
+        int spaceInString=0;
+        for(int i=0;i<s.length();i++){
+            if(s[i]==' ')spaceInString++;
+        }
+        int spaceToBeInserted=maxWidth-s.length();
+        if(spaceInString==0 || isLast){
+            s.insert(s.length(),spaceToBeInserted,' ');
+            return s;
+        }
+        int eachSlot=spaceToBeInserted/spaceInString;
+        int leftOverSpace=spaceToBeInserted%spaceInString;
+
+        for(int i = 0; i<s.length(); i++){
+        if(s[i] == ' ' && (eachSlot > 0 || leftOverSpace >0 )){ //we add spaces till (eachSlot > 0 || leftOverSpace >0)
+            //required noOfSpaces = eachSlot + (leftOverSpace-- > 0 ? 1:0)
+            //((leftOverSpace--) > 0 ? 1:0) will return 1 if leftoverspace>0.
+            //(leftOverSpace--) post decrement
+            int noOfSpaces = eachSlot + ((leftOverSpace--) > 0 ? 1:0);
+            s.insert(i, noOfSpaces , ' '); //inserting spaces
+            i+=noOfSpaces;   //increament count with no of spaces inserted each time 
+        }
+        
+    }
+    return s;
+
+    }
+
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> ans;
+        string temp=words[0];
+        for(int i=1;i<words.size();i++){
+            if(temp.length() + words[i].length()+1 <=maxWidth)temp+=" "+words[i];
+            else{
+                temp=spaceJustifier(temp,maxWidth,0);
+                ans.push_back(temp);
+                temp=words[i];
+            }
+        }
+        temp=spaceJustifier(temp,maxWidth,1);
+        ans.push_back(temp);
+        return ans;
+    }
+};
