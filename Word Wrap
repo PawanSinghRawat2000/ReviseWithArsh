@@ -1,0 +1,33 @@
+//User function Template for C++
+
+class Solution {
+public:
+     int solveWordWrap(vector<int>nums, int k) 
+    { 
+        int n = nums.size();
+        vector<int>dp(n , -1);
+       // return solve(0 , nums , k , dp);
+       dp[n-1]=0;
+        int val = 0 ;
+       int mini = 1e9;
+       for(int i=n-2;i>=0;i--)
+       {  val=0;
+            mini = 1e9;
+           for(int j=i;j<n;j++)   //25
+           {
+                val = val + nums[j];
+                int gap = j - i;
+                if(val + gap <= k && j < nums.size() - 1){
+              int cost = pow(k - (val+gap) , 2) + dp[j+1];
+              mini = min(mini , cost);
+          }
+          else if(val + gap <= k && j == nums.size() - 1)  dp[i] = 0;
+           }
+           if(dp[i]!=0){
+           dp[i]=mini;}
+       }
+       return dp[0];
+    } 
+
+
+};
