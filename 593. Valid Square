@@ -1,0 +1,22 @@
+class Solution {
+public:
+
+    double distance(vector<int>p1,vector<int> p2){
+        int x1=p1[0],y1=p1[1],x2=p2[0],y2=p2[1];
+        double xd=x1-x2,yd=y1-y2;
+        return xd*xd + yd*yd;
+    }
+
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        double d1=distance(p1,p2);
+        double d2=distance(p1,p3);
+        double d3=distance(p1,p4);
+
+        if(d1==0 || d2==0 || d3==0)return false;
+        
+        return (d1 == d2 && d3 == 2 * d1 && distance(p2, p3) == 2 * distance(p3, p4))
+            || (d1 == d3 && d2 == 2 * d1 && distance(p2, p4) == 2 * distance(p3, p4)) 
+            || (d2 == d3 && d1 == 2 * d2 && distance(p3, p4) == 2 * distance(p2, p4));
+
+    }
+};
