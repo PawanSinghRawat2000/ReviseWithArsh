@@ -1,0 +1,29 @@
+bool isFeasible(vector<int>&stalls,int k,long long mid){
+    int lastPos=stalls[0];
+    int cows=1;
+    for(int i=0;i<stalls.size();i++){
+        if((stalls[i]-lastPos)>=mid){
+            cows++;
+            if(cows==k)return true;
+            lastPos=stalls[i];
+        }
+    }
+    return false;
+}
+
+
+int aggressiveCows(vector<int> &stalls, int k)
+{
+    //    Write your code here.
+    sort(stalls.begin(),stalls.end());
+    int ans=-1;
+    int low=0,high=stalls[stalls.size()-1];
+    while(low<=high){
+        int mid=low+(high-low)/2;
+        if(isFeasible(stalls,k,mid)){
+            ans=mid;
+            low=mid+1;
+        }else high=mid-1;
+    }
+    return ans;
+}
