@@ -1,0 +1,89 @@
+Node*reverse(Node*head){
+    Node*prev=NULL;
+    Node*curr=head;
+    while(curr!=NULL){
+        Node* nextptr=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=nextptr;
+    }
+    return prev;
+}
+
+Node* subLinkedList(Node* l1, Node* l2)
+{
+    //Your code here
+    Node*curr1=l1;
+    Node*curr2=l2;
+    int cnt1=0,cnt2=0;
+    //remove starting zeroes
+    while(curr1!=NULL&&curr1->data==0) curr1=curr1->next;
+    while(curr2!=NULL&&curr2->data==0) curr2=curr2->next;
+    while(curr1!=NULL){
+        cnt1++;
+        curr1=curr1->next;
+    }
+    while(curr2!=NULL){
+        cnt2++;
+        curr2=curr2->next;
+    }
+    
+    //check which number is greater
+    if(cnt1<cnt2) swap(l1,l2);
+     if(cnt1==cnt2){
+        Node*first=l1;
+        Node*second=l2;
+        bool bl=false,bl1=false;
+       while(first!=NULL&&second!=NULL){
+           if(first->data>second->data){
+               bl=true;
+               break;
+           }
+           if(first->data<second->data){
+               bl1=true;
+               break;
+           }
+           first=first->next;
+           second=second->next;
+       }
+       if(bl1) swap(l1,l2);
+     }
+       
+       //reverse
+    l1=reverse(l1);
+    l2=reverse(l2);
+    Node*first=l1;
+    Node*second=l2;
+    int val=0;
+    while(first!=NULL&&second!=NULL){
+        if(first->data+val<second->data){
+            first->data=(first->data+val+10-second->data);
+            val=-1;
+        }
+        else{
+             first->data=(first->data+val-second->data);
+             val=0;
+        }
+        first=first->next;
+        second=second->next;
+    }
+    if(first!=NULL) {
+        Node*taken=first;
+        while(taken!=NULL){
+            if(taken->data+val>=0){
+                taken->data=taken->data+val;
+                break;
+            } else{
+                taken->data=9;
+                val=-1;
+            }
+            taken=taken->next;
+        }
+    }
+   l1= reverse(l1);
+   Node*f=l1;
+   while(f->next!=NULL&&f->data==0){
+       f=f->next;
+   }
+   return f;   
+}
