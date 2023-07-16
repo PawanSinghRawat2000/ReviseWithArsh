@@ -1,0 +1,46 @@
+class Solution{ 
+public:
+
+    Node* getMid(Node* head){
+        if(head==NULL)return head;
+        Node* slow=head,*fast=head;
+        while(fast && fast->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return slow;
+    }
+    
+    Node* reverse(Node* head){
+        if(head==NULL)return head;
+        Node* prev=NULL;
+        Node* curr=head;
+        Node* nextptr;
+        while(curr){
+            nextptr=curr->next;
+            curr->next=prev;
+            
+            prev=curr;
+            curr=nextptr;
+        }
+        return prev;
+    }
+
+    void reorderList(Node* head) {
+        // Your code here
+        Node* mid=getMid(head);
+        Node* node=mid->next;
+        mid->next=NULL;
+        node=reverse(node);
+        Node* temp=head;
+        while(temp && node){
+            Node * n1=temp->next;
+            Node* n2=node->next;
+            temp->next=node;
+            node->next=n1;
+            temp=n1;
+            node=n2;
+        }
+        
+    }
+};
