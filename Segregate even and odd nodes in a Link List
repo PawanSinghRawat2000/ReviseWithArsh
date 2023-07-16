@@ -1,0 +1,24 @@
+class Solution{
+public:
+    Node* divide(int N, Node *head){
+        // code here
+        if(head==NULL || head->next==NULL)return head;
+        Node* even=new Node(-1);
+        Node* ehead=even;
+        Node* odd=new Node(-1);
+        Node* ohead=odd;
+        while(head){
+            if(head->data%2==0){
+                even->next=head;
+                even=even->next;
+            }else {
+                odd->next=head;
+                odd=odd->next;
+            }
+            head=head->next;
+        }
+        odd->next=NULL;
+        even->next=ohead->next;
+        return ehead->next;
+    }
+};
