@@ -1,0 +1,33 @@
+class Solution
+{
+    public: 
+    Node* head=NULL,*curr=head;
+    //Function to convert binary tree to doubly linked list and return it.
+    void insertAtTail(Node* root){
+        Node* temp=new Node(root->data);
+        if(head==NULL){
+            head=temp;
+            head->left=NULL;
+            curr=head;
+        }else{
+            curr->right=temp;
+            temp->left=curr;
+            curr=curr->right;
+        }
+    }
+    
+    void inorder(Node* root){
+        if(root==NULL)return;
+        inorder(root->left);
+        insertAtTail(root);
+        inorder(root->right);
+    }
+    
+    Node * bToDLL(Node *root)
+    {
+        // your code herei
+        if(root==NULL)return root;
+        inorder(root);
+        return head;
+    }
+};
