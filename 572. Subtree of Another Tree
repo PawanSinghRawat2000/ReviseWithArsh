@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool isIdentical(TreeNode* root,TreeNode* s){
+        if(root==NULL || s==NULL)return root==s;
+        return (root->val==s->val && isIdentical(root->left,s->left) && isIdentical(root->right,s->right));
+    }
+
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(root==NULL || subRoot==NULL)return false;
+        if(isIdentical(root,subRoot))return true;
+        return isSubtree(root->left,subRoot) || isSubtree(root->right,subRoot);
+
+    }
+};
