@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int helper(vector<vector<int>> &dp,vector<int> &cuts,int i,int j,int left,int right)
+    {
+        if(i==j) return right-left;
+        if(i>j) return 0;
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans=100000007;
+        
+        for(int k=i;k<=j;k++)
+        {
+           int temp=(right-left)+ helper(dp,cuts,i,k-1,left,cuts[k])+helper(dp,cuts,k+1,j,cuts[k],right);
+            ans=min(ans,temp);
+        }
+        
+        return dp[i][j]=ans;
+    }
+    int minCost(int n, vector<int>& cuts) {
+        sort(cuts.begin(),cuts.end());
+        vector<vector<int>> dp(cuts.size(),vector<int> (cuts.size(),-1));
+        
+        return helper(dp,cuts,0,cuts.size()-1,0,n);
+    }
+};
