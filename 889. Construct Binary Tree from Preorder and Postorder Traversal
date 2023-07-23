@@ -1,0 +1,25 @@
+class Solution {
+public:
+
+    int findElement(vector<int>&postorder,int element){
+        return find(postorder.begin(),postorder.end(),element)-postorder.begin();
+    }
+
+    TreeNode* buildTree(vector<int>& preorder,int preStart,int preEnd, vector<int>& postorder,int postStart,int postEnd){
+        if(preStart>preEnd)return NULL;
+
+        TreeNode *root=new TreeNode(preorder[preStart]);
+        if(preStart==preEnd)return root;
+
+        int index=findElement(postorder,preorder[preStart+1]);
+        int numLeft=index-postStart+1;
+        root->left=buildTree(preorder,preStart+1,preStart+numLeft,postorder,postStart,index);
+        root->right=buildTree(preorder,preStart+numLeft+1,preEnd,postorder,index+1,postEnd-1);
+        return root;
+    }
+
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        int n=preorder.size();
+        return buildTree(preorder,0,n-1,postorder,0,n-1);
+    }
+};
