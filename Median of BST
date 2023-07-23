@@ -1,0 +1,32 @@
+float inorder( struct Node* root,int &k){
+    if(root==NULL)return -1;
+    
+    float left=inorder(root->left,k);
+    k--;
+    if(k==0)return root->data;
+    
+    float right=inorder(root->right,k);
+    return  max(left,right);
+}
+
+int countNode(struct Node* root){
+    if(root==NULL)return 0;
+    int left=countNode(root->left);
+    int right=countNode(root->right);
+    return left+right+1;
+}
+
+
+float findMedian(struct Node *root)
+{
+      //Code here
+      int n=countNode(root);
+      if(n%2==0){
+          int k1=n/2;
+          int k2=n/2+1;
+          return (inorder(root,k1)+inorder(root,k2))/2.0;
+      }else{
+          int k=(n+1)/2;
+          return inorder(root,k);
+      }
+}
