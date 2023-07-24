@@ -1,0 +1,30 @@
+void dfs(BinaryTreeNode<int> *root,int k,vector<int>path,vector<vector<int>>&ans){
+    if(root==NULL)return;
+    path.push_back(root->data);
+
+    dfs(root->left,k,path,ans);
+    dfs(root->right,k,path,ans);
+
+
+    int sum=0;
+    for(int i=path.size()-1;i>=0;i--){
+        vector<int>temp;
+        sum+=path[i];
+        if(sum==k){
+            for(int j=i;j<path.size();j++){
+                temp.push_back(path[j]);
+            }
+            ans.push_back(temp);
+        }
+    }
+    path.pop_back();
+}
+
+vector<vector<int>> kPathSum(BinaryTreeNode<int> *root, int k) {
+    // Write your code here.
+    vector<vector<int>> ans;
+
+    dfs(root,k,{},ans);
+    return ans;
+
+}
