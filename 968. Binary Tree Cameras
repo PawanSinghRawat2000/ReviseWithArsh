@@ -1,0 +1,25 @@
+class Solution {
+public:
+    //2--->covered
+    //1--->we need a camera
+    //0--->other
+    int ans=0;
+    int dfs(TreeNode* root){
+        if(root==NULL)return 2;
+        int left=dfs(root->left);
+        int right=dfs(root->right);
+
+        if(left==0 || right==0){
+            ans++;
+            return 1;
+        }
+        if(left==1 || right==1)return 2;
+        else return 0;
+
+    }
+
+    int minCameraCover(TreeNode* root) {
+        if(dfs(root)==0)ans++;
+        return ans;
+    }
+};
