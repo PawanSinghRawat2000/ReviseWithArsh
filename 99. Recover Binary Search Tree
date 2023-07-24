@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int i=0;
+    void check(vector<int>&v,TreeNode* root){
+        if(!root)return;
+        check(v,root->left);
+        if(v[i]!=root->val)swap(v[i],root->val);
+        i++;
+        check(v,root->right);
+    }
+
+    void inorder(TreeNode* root,vector<int>&v){
+        if(!root)return;
+        inorder(root->left,v);
+        v.push_back(root->val);
+        inorder(root->right,v);
+    }
+
+    void recoverTree(TreeNode* root) {
+        vector<int> v;
+        inorder(root,v);
+        sort(v.begin(),v.end());
+        check(v,root);
+
+        return;
+    }
+};
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+public:
+
+    void inorder(TreeNode* root,TreeNode* &first,TreeNode* &last,TreeNode* &prev){
+        if(!root)return;
+        inorder(root->left,first,last,prev);
+
+        if(prev!=NULL && prev->val>root->val){
+            if(first==NULL){
+                first=prev;
+                last=root;
+            }else
+                last=root;
+            }
+        prev=root;
+        inorder(root->right,first,last,prev);
+    }
+
+    void recoverTree(TreeNode* root) {
+        TreeNode* first= NULL,*prev=NULL,*last=NULL;
+        inorder(root,first,last,prev);
+        swap(first->val,last->val);
+        
+    }
+};
