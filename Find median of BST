@@ -1,0 +1,67 @@
+int countNodes(TreeNode<int>* root){
+    TreeNode<int>* curr=root;
+    int count=0;
+    while(curr){
+        if(curr->left==NULL){
+            count++;
+            curr=curr->right;
+        }else{
+            TreeNode<int>* prev=curr->left;
+            while(prev->right!=NULL && prev->right!=curr)prev=prev->right;
+
+            if (prev->right == NULL) {
+                prev->right = curr;
+                curr=curr->left;
+            }else{
+                prev->right=NULL;
+                count++;
+                curr=curr->right;
+            }
+        }
+    }
+    return count;
+}
+
+int medianBST(TreeNode<int>* root) 
+{
+    // Write your code here.
+    //MORRIS TRAVERSAL TO count nodes
+    int count=countNodes(root);
+
+    //MORRIS TRAVERSAL
+    TreeNode<int>* curr=root,*p= NULL;
+    int currCount=0;
+    while(curr){
+        if(curr->left==NULL){
+            currCount++;
+            if (count % 2 != 0 && currCount == (count+1)/2)
+                return curr->data;
+ 
+            // Even case
+            else if (count % 2 == 0 && currCount == (count/2)+1)
+                return (p->data + curr->data)/2;
+            p=curr;
+            curr=curr->right;
+        }else{
+            TreeNode<int>* prev=curr->left;
+            while(prev->right!=NULL && prev->right!=curr)prev=prev->right;
+
+            if (prev->right == NULL) {
+                prev->right = curr;
+                curr=curr->left;
+            }else{
+                prev->right=NULL;
+                currCount++;
+                if (count % 2 != 0 && currCount == (count+1)/2)
+                return curr->data;
+ 
+            // Even case
+                else if (count % 2 == 0 && currCount == (count/2)+1)
+                return (p->data + curr->data)/2;
+                p=curr;
+                curr=curr->right;
+            }
+        }
+    }
+    return -1;
+}
