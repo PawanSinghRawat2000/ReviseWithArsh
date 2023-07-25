@@ -1,0 +1,59 @@
+class Node{
+    public:
+    Node* links[26];
+    bool flag;
+    bool containsKey(char ch){
+        return links[ch-'a']!=NULL;
+    }
+    void put(char ch,Node* newNode){
+        links[ch-'a']=newNode;
+    }
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+    void setEnd(){
+        flag=true;
+    }
+    bool isEnd(){
+        return flag;
+    }
+};
+class WordDictionary {
+public:
+    Node* root;
+    WordDictionary() {
+        root=new Node();
+    }
+    
+    void addWord(string word) {
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+            if(!node->containsKey(word[i])){
+                node->put(word[i],new Node());
+            }
+            node=node->get(word[i]);
+        }
+        node->setEnd();
+        
+    }
+
+    bool search(string word,Node* node,int i){
+        if(i==word.length()){
+            return node->isEnd();
+        }
+        bool ans=false;
+        if(word[i]=='.'){
+            for(int j='a';j<='z';j++){
+                if(node->containsKey(j))ans=ans | search(word,node->get(j),i+1);
+                if(ans)return true;
+            }
+        }else{
+            if(node->containsKey(word[i]))ans=search(word,node->get(word[i]),i+1);
+        }
+        return ans;
+    }
+    
+    bool search(string word) {
+        return search(word,root,0);
+    }
+};
