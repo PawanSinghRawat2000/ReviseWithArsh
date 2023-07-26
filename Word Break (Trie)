@@ -1,0 +1,75 @@
+class Node{
+    public:
+    Node* links[26];
+    bool flag;
+    bool containsKey(char ch){
+        return links[ch-'a']!=NULL;
+    }
+    void put(char ch,Node* newNode){
+        links[ch-'a']=newNode;
+    }
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+    void setEnd(){
+        flag=true;
+    }
+    bool isEnd(){
+        return flag;
+    }
+};
+class Trie {
+public:
+    Node* root;
+    Trie() {
+        root=new Node();
+    }
+
+    void insert(string word) {
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+            if(!node->containsKey(word[i])){
+                node->put(word[i],new Node());
+            }
+            node=node->get(word[i]);
+        }
+        node->setEnd();
+
+    }
+    bool search(string word){
+        Node* node=root;
+        for(int i=0;i<word.size();i++){
+            if(!node->containsKey(word[i])){
+                return false;
+            }
+            node=node->get(word[i]);
+        }
+        return node->isEnd();
+    }
+};
+class Solution{
+    private:
+    
+    public:
+    // A : given string to search
+    // B : vector of available strings
+    
+    bool f(string s ,Trie trie){
+        int sz=s.length();
+        if(sz==0)return true;
+        for(int i=1;i<=sz;i++){
+            if(trie.search(s.substr(0,i)) && f(s.substr(i,sz-i),trie))return true;
+        }
+        return false;
+    }
+    
+    int wordBreak(string A, vector<string> &B) {
+        //code here
+        Trie trie;
+        for(int i=0;i<B.size();i++){
+            trie.insert(B[i]);
+        }
+        return f(A,trie);
+        
+    }
+};
