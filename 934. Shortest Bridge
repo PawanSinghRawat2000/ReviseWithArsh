@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int dx[4]={0,0,1,-1};
+    int dy[4]={1,-1,0,0};
+
+    void dfs(int i,int j,vector<vector<int>>& grid,vector<vector<int>>&vis,queue<pair<int,int>>&q,int n){
+        vis[i][j]=1;
+        q.push({i,j});
+        for(int k=0;k<4;k++){
+            int ni=i+dx[k];
+            int nj=j+dy[k];
+            if(ni>=0 && ni<n && nj>=0 && nj<n){
+                if(!vis[ni][nj] && grid[ni][nj]==1)dfs(ni,nj,grid,vis,q,n);
+            }
+        }
+    }
+
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n=grid.size();
+        vector<vector<int>>vis(n,vector<int>(n,0));
+        queue<pair<int,int>> q;
+        bool flag=false;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){
+                    dfs(i,j,grid,vis,q,n);
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag)break;
+        }
+
+        int l=0;
+        while(!q.empty()){
+            int sz=q.size();
+            l++;
+            while(sz--){
+                int i=q.front().first;
+                int j=q.front().second;
+                q.pop();
+                for(int k=0;k<4;k++){
+                    int ni=i+dx[k];
+                    int nj=j+dy[k];
+                    if(ni>=0 && ni<n && nj>=0 && nj<n){
+                        if(!vis[ni][nj] && grid[ni][nj]==1){
+                            return l-1;
+                        }else if(!vis[ni][nj] && grid[ni][nj]==0){
+                            vis[ni][nj]=1;
+                            q.push({ni,nj});
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
