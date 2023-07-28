@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isValid(vector<int>&p1,vector<int>&p2){
+        if(p1[0]==p2[0])return true;
+        if(p1[1]==p2[1])return true;
+        return false;
+    }
+
+    void dfs(int i,vector<vector<int>>&stones,vector<int>&vis){
+        vis[i]=1;
+        for(int j=0; j<stones.size();j++){
+            if(isValid(stones[i],stones[j]) && !vis[j])dfs(j,stones,vis);
+        }
+    }
+
+    int removeStones(vector<vector<int>>& stones) {
+        int n=stones.size();
+        vector<int>vis(n,0);
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                dfs(i,stones,vis);
+                cnt++;
+            }
+        }
+        return n-cnt;
+    }
+};
