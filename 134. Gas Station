@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int extraFuel=0,reqFuel=0,start=0;
+        for(int i=0;i<gas.size();i++){
+            extraFuel+=(gas[i]-cost[i]);
+            if(extraFuel<0){
+                reqFuel+=extraFuel;
+                extraFuel=0;
+                start=i+1;
+            }
+        }
+        if(extraFuel+reqFuel>=0)return start;
+        return -1;
+    }
+};
