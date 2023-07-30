@@ -1,0 +1,28 @@
+#define pi 3.14159265
+class Solution {
+public:
+    int visiblePoints(vector<vector<int>>& points, int angle, vector<int>& loc) {
+        vector<double>arr;
+        int samepoints=0;
+        for(auto it: points){
+            if(it==loc){
+                samepoints++;
+                continue;
+            }
+            double x=it[0]-loc[0],y=it[1]-loc[1];
+            double theta=atan2(y,x)*180/pi;
+            arr.push_back(theta<0?theta+360:theta);
+        }
+
+        sort(arr.begin(),arr.end());
+        int len=arr.size(),i=0,j=0,ans=0;
+        for(int i=0;i<len;i++)arr.push_back(360+arr[i]);
+
+        while(j<2*len){
+            while(j<2*len && (arr[j]-arr[i]<=angle))j++;
+            ans=max(ans,j-i);
+            i++;
+        }
+        return ans+samepoints;
+    }
+};
