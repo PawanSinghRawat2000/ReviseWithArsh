@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans;
+        for(int i=0;i<=n;i++){
+            int count1=0;
+            int n=i;
+            while(n!=0){
+                if(n&1!=0)count1++;
+                n=n>>1;
+            }
+            ans.push_back(count1);
+        }
+        return ans;
+    }
+};
+
+-----------------------------------------------------------------
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int>dp(n+1);
+        dp[0]=0;
+        for(int i=1;i<=n;i++){
+            dp[i]=1+dp[i&(i-1)];
+        }
+        return dp;
+        
+    }
+};
