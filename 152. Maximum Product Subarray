@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int prod1=nums[0],prod2=nums[0],ans=nums[0];
+        for(int i=1;i<nums.size();i++){
+            int temp=max({nums[i],nums[i]*prod1,nums[i]*prod2});
+            prod2=min({nums[i],nums[i]*prod1,nums[i]*prod2});
+            prod1=temp;
+            ans=max(ans,prod1);
+        }
+        return ans;
+    }
+};
+
+
+--------------------------------------------------------------------
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int prod1=1,prod2=1;
+        int ans=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            prod1=prod1*nums[i];
+            prod2=prod2*nums[nums.size()-1-i];
+            ans=max({ans,prod1,prod2});
+            if(prod1==0)prod1=1;
+            if(prod2==0)prod2=1;
+           
+        }
+        return ans;
+    }
+};
