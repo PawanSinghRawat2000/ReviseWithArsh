@@ -1,0 +1,72 @@
+//RECURSIVE
+class Solution {
+public:
+
+
+
+    int solve(vector<string>& strs,int i, int m, int n){
+        if(i==strs.size() || (m==0 && n==0))return 0;
+
+
+        int zeros=0,ones=0;
+        for(int j=0;j<strs[i].length();j++){
+            if(strs[i][j]=='1')ones++;
+            else zeros++;
+        }
+        int take=0;
+        if(m>=zeros && n>=ones)take=1+solve(strs,i+1,m-zeros,n-ones);
+        int notTake=solve(strs,i+1,m,n);
+        return max(take,notTake);
+    }
+
+    int findMaxForm(vector<string>& strs, int m, int n) {
+
+        return solve(strs,0,m,n);
+    }
+};
+--------------------------------------------------------------------------------------------------------
+//MEMOIZATION
+class Solution {
+public:
+
+
+
+    int solve(vector<string>& strs,int i, int m, int n,vector<vector<vector<int>>>&dp){
+        if(i==strs.size() || (m==0 && n==0))return 0;
+
+        if(dp[i][m][n]!=-1)return dp[i][m][n];
+        int zeros=0,ones=0;
+        for(int j=0;j<strs[i].length();j++){
+            if(strs[i][j]=='1')ones++;
+            else zeros++;
+        }
+        int take=0;
+        if(m>=zeros && n>=ones)take=1+solve(strs,i+1,m-zeros,n-ones,dp);
+        int notTake=solve(strs,i+1,m,n,dp);
+        return dp[i][m][n]= max(take,notTake);
+    }
+
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<vector<int>>>dp(601,vector<vector<int>>(101,vector<int>(101,-1)));
+        return solve(strs,0,m,n,dp);
+    }
+};
+---------------------------------------------------------------------------------------------
+//TABULATION
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+         vector<vector<int>> dp(m+1 , vector<int>(n+1));
+
+         for(auto &s:strs){
+             int zeros=count(s.begin(),s.end(),'0');
+             int ones=s.length()-zeros;
+             for(int j=n;j>=ones;j--){
+                 for(int i=m;i>=zeros;i--){
+                     dp[i][j]=max(dp[i][j],1+dp[i-zeros][j-ones]);
+                 }
+             }
+         }
+         return dp[m][n];
+    }
+};
