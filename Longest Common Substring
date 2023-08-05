@@ -1,0 +1,77 @@
+class Solution{
+    public:
+    int maxi=0;
+    
+    int solve(string S1,string S2,int n,int m){
+        if(n==0 || m==0)return 0;
+        int take=0;
+        if(S1[n-1]==S2[m-1]){
+            take= 1+solve(S1,S2,n-1,m-1);
+            maxi=max(maxi,take);
+        }
+        
+        solve(S1,S2,n-1,m);
+        solve(S1,S2,n,m-1);
+        return  take;
+    }
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        // your code here
+        solve(S1,S2,n,m);
+        return maxi;
+    }
+};
+
+------------------------------------------------------------------------
+
+class Solution{
+    public:
+    int maxi=0;
+    
+    int solve(string S1,string S2,int n,int m,vector<vector<int>>&dp){
+        if(n==0 || m==0)return 0;
+        int take=0;
+        if(dp[n][m]!=-1)return dp[n][m];
+        if(S1[n-1]==S2[m-1]){
+            take= 1+solve(S1,S2,n-1,m-1,dp);
+            maxi=max(maxi,take);
+        }
+        
+        solve(S1,S2,n-1,m,dp);
+        solve(S1,S2,n,m-1,dp);
+        return dp[n][m]=take;
+    }
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        // your code here
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        solve(S1,S2,n,m,dp);
+        return maxi;
+    }
+};
+
+------------------------------------------------------------------------------------
+
+class Solution{
+    public:
+
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        // your code here
+        vector<vector<int>>dp(n+1,vector<int>(m+1));
+        for(int i=0;i<n+1;i++)dp[i][0]=0;
+        for(int i=0;i<m+1;i++)dp[0][i]=0;
+        int ans=0;
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<m+1;j++){
+                if(S1[i-1]==S2[j-1])dp[i][j]=1+dp[i-1][j-1];
+                else dp[i][j]=0;
+                ans=max(ans,dp[i][j]);
+            }
+            
+        }
+        return ans;
+    }
+};
