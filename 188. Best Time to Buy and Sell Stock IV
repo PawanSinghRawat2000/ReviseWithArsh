@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+    int solve(int k, vector<int>& prices,int ind,int buy){
+        if(ind>=prices.size() || k==0)return 0;
+
+        int profit;
+        if(buy==0){
+            profit=max(solve(k,prices,ind+1,0),-prices[ind]+solve(k,prices,ind+1,1));
+        }
+        if(buy==1){
+            profit=max(solve(k,prices,ind+1,1),prices[ind]+solve(k-1,prices,ind+1,0));
+        }
+        return profit;
+    }
+
+    int maxProfit(int k, vector<int>& prices) {
+        return solve(k,prices,0,0);
+    }
+};
+--------------------------------------------------------------------------
+class Solution {
+public:
+    int dp[101][1001][2];
+    int solve(int k, vector<int>& prices,int ind,int buy){
+        if(ind>=prices.size() || k==0)return 0;
+        if(dp[k][ind][buy]!=-1)return dp[k][ind][buy];
+        int profit;
+        if(buy==0){
+            profit=max(solve(k,prices,ind+1,0),-prices[ind]+solve(k,prices,ind+1,1));
+        }
+        if(buy==1){
+            profit=max(solve(k,prices,ind+1,1),prices[ind]+solve(k-1,prices,ind+1,0));
+        }
+        return dp[k][ind][buy]= profit;
+    }
+
+    int maxProfit(int k, vector<int>& prices) {
+        memset(dp,-1,sizeof(dp));
+        return solve(k,prices,0,0);
+    }
+};
