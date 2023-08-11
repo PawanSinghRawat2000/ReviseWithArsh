@@ -1,0 +1,9 @@
+int minCost(int coin[], int n, int k){
+    sort(coin,coin+n);
+    int coins_required=ceil(1.0*n/(k+1));
+    
+    for(int i=0;i<=coins_required;i++){
+        ans+=coins[i];
+    }
+    return ans;
+}
