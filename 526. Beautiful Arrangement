@@ -1,0 +1,28 @@
+class Solution {
+public:
+
+    void solve(int ind,int n,vector<int>num,int &ans){
+        if(ind==n){
+            ans++;
+            return;
+        }
+
+        for(int i=ind;i<n;i++){
+            if(num[i]%(ind+1)==0 || (ind+1)%num[i]==0){
+                 swap(num[i],num[ind]);
+                solve(ind+1,n,num,ans);
+                swap(num[i],num[ind]);
+            }
+           
+        }
+    }
+
+    int countArrangement(int n) {
+        //all permutations
+        int ans=0;
+        vector<int>num;
+        for(int i=1;i<=n;i++)num.push_back(i);
+        solve(0,n,num,ans);
+        return ans;
+    }
+};
