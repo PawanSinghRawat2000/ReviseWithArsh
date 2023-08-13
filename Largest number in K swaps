@@ -1,0 +1,26 @@
+class Solution
+{
+    public:
+    //Function to find the largest number after k swaps.
+    
+    void solve(string &str,int ind,int k,string &ans){
+        ans=max(ans,str);
+        if(k==0 ||  ind>=str.length())return;
+        for(int i=ind;i<str.length();i++){
+            if(i!=ind && str[i]<=str[ind])continue;
+            swap(str[i],str[ind]);
+            solve(str,ind+1,k-1,ans);
+            swap(str[i],str[ind]);
+        }
+         solve(str,ind+1,k,ans);
+    }
+    
+    string findMaximumNum(string str, int k)
+    {
+       // code here.
+       //FIND ALL PERMUTATION AFTER 3 SWAPS
+       string ans="0";
+       solve(str,0,k,ans);
+       return ans;
+    }
+};
