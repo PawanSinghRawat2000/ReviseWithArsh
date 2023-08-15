@@ -1,0 +1,59 @@
+class NumArray {
+public:
+    int n;
+    vector<int>seg;
+    vector<int>arr;
+    void build(int ind,int low,int high,vector<int>&nums){
+
+        if(low==high){
+            seg[ind]=nums[low];
+            return;
+        }
+        int mid=(low+high)/2;
+        build(2*ind+1,low,mid,nums);
+        build(2*ind+2,mid+1,high,nums);
+        seg[ind]=seg[2*ind+1]+seg[2*ind+2];
+    }
+
+    NumArray(vector<int>& nums) {
+        n=nums.size();
+        arr=nums;
+        seg.resize(4*n,0);
+        build(0,0,n-1,arr);
+    }
+    void updateTree(int pos,int low,int high,int index,int val){
+        if(index<low || index>high)return;
+        if(low==high){
+            if(low==index)seg[pos]=val;
+            return;
+        }
+
+        int mid=(low+high)/2;
+        updateTree(2*pos+1,low,mid,index,val);
+        updateTree(2*pos+2,mid+1,high,index,val);
+        seg[pos]=seg[2*pos+1]+seg[2*pos+2];
+    }
+    
+    void update(int index, int val) {
+        updateTree(0,0,n-1,index,val);
+    }
+    int query(int ind,int low,int high,int left,int right){
+        if(low>=left && high<=right)return seg[ind];
+        if(low>right || high<left)return 0;
+        int mid=(low+high)/2;
+        int leftSum=query(2*ind+1,low,mid,left,right);
+        int rightSum=query(2*ind+2,mid+1,high,left,right);
+        return leftSum+rightSum;
+    }
+    
+    int sumRange(int left, int right) {
+        return query(0,0,n-1,left,right);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
