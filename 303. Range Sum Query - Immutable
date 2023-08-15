@@ -1,0 +1,60 @@
+class NumArray {
+public:
+    int sum[10001];
+    NumArray(vector<int>& nums) {
+        memset(sum,0,sizeof(sum));
+        sum[0]=nums[0];
+        for(int i=1;i<nums.size();i++){
+            sum[i]=sum[i-1]+nums[i];
+        }
+    }
+    
+    int sumRange(int left, int right) {
+        if(left==0)return sum[right];
+        return sum[right]-sum[left-1];
+    }
+};
+
+-------------------------------------------------------------------------
+SEGMENT TREE
+class NumArray {
+public:
+
+    vector<int>seg;
+    int n;
+    void build(int ind,int low,int high,vector<int>&nums){
+        if(low==high){
+            seg[ind]=nums[low];
+            return;
+        }
+        int mid=(low+high)/2;
+        build(2*ind+1,low,mid,nums);
+        build(2*ind+2,mid+1,high,nums);
+        seg[ind]=seg[2*ind+1]+seg[2*ind+2];
+    }
+
+    NumArray(vector<int>& nums) {
+        n=nums.size();
+        seg.resize(4*n,0);
+        build(0,0,n-1,nums);
+    }
+
+    int query(int ind,int low,int high,int left,int right){
+        if(low>=left && high<=right)return seg[ind];
+        if(high<left || low>right)return 0;
+        int mid=(low+high)/2;
+        int leftSum=query(2*ind+1,low,mid,left,right);
+        int rightSum=query(2*ind+2,mid+1,high,left,right);
+        return leftSum+rightSum;
+    }
+    
+    int sumRange(int left, int right) {
+        return query(0,0,n-1,left,right);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * int param_1 = obj->sumRange(left,right);
+ */
